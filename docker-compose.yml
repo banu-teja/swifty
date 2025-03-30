@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: jobapp_db
+    env_file: .env # Load environment variables from .env
+    ports:
+      - "5432:5432" # Expose PostgreSQL port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  redis:
+    image: redis:7-alpine
+    container_name: jobapp_redis
+    ports:
+      - "6379:6379" # Expose Redis port
+    volumes:
+      - redis_data:/data
+
+  web:
+    build: .
+    container_name: jobapp_web
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app # Mount the entire project directory
+    ports:
+      - "8000:8000"
+    environment:
+      # Assuming environment variables are set via .env file or similar
+      # DATABASE_URL: postgresql://user:password@db:5432/jobappdb
+      # CELERY_BROKER_URL: redis://redis:6379/0
+      # CELERY_RESULT_BACKEND: redis://redis:6379/0
+      # SECRET_KEY: your_secret_key
+      # ALGORITHM: HS256
+      # ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      PYTHONUNBUFFERED: 1 # Ensures print statements and logs show up
+    depends_on:
+      - db
+      - redis
+    env_file: .env # Load environment variables from .env
+
+  worker:
+    build: .
+    container_name: jobapp_worker
+    command: celery -A app.worker.celery_app worker --loglevel=info
+    volumes:
+      - .:/app # Mount the entire project directory
+    environment:
+      # Assuming environment variables are set via .env file or similar
+      # DATABASE_URL: postgresql://user:password@db:5432/jobappdb
+      # CELERY_BROKER_URL: redis://redis:6379/0
+      # CELERY_RESULT_BACKEND: redis://redis:6379/0
+      PYTHONUNBUFFERED: 1 # Ensures print statements and logs show up
+    depends_on:
+      - db
+      - redis
+    env_file: .env # Load environment variables from .env
+
+volumes:
+  postgres_data:
+  redis_data:

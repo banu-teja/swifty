@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+prompt.txt
 
 # Distribution / packaging
 .Python
