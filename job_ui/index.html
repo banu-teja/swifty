@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Job Application</h1>
+    <form id="jobApplicationForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" />
+      </div>
+      <div class="form-group">
+        <label for="position">Position Applied For:</label>
+        <input type="text" id="position" name="position" required />
+      </div>
+      <div class="form-group">
+        <label for="startDate">Available Start Date:</label>
+        <input type="date" id="startDate" name="startDate" />
+        <small style="display: block; margin-top: 3px; color: #6c757d"
+          >Please use the calendar icon to select a date.</small
+        >
+      </div>
+      <div class="form-group">
+        <label for="salary">Desired Salary:</label>
+        <input type="text" id="salary" name="salary" />
+      </div>
+      <div class="form-group">
+        <label for="resume">Resume:</label>
+        <input
+          type="file"
+          id="resume"
+          name="resume"
+          accept=".pdf,.doc,.docx"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="coverLetter">Cover Letter (Optional):</label>
+        <input
+          type="file"
+          id="coverLetter"
+          name="coverLetter"
+          accept=".pdf,.doc,.docx,.txt"
+        />
+      </div>
+      <div class="form-group">
+        <label for="linkedin">LinkedIn Profile URL (Optional):</label>
+        <input type="text" id="linkedin" name="linkedin" />
+      </div>
+      <div class="form-group">
+        <label for="portfolio">Portfolio URL (Optional):</label>
+        <input type="text" id="portfolio" name="portfolio" />
+      </div>
+      <div class="form-group">
+        <label for="experience">Years of Experience:</label>
+        <input type="number" id="experience" name="experience" min="0" />
+      </div>
+      <div class="form-group">
+        <label for="comments">Additional Comments (Optional):</label>
+        <textarea id="comments" name="comments" rows="4"></textarea>
+      </div>
+      <button type="submit">Submit Application</button>
+    </form>
+
+    <script src="script.js"></script>
+  </body>
+</html>
