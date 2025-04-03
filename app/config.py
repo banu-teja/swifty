@@ -18,6 +18,14 @@ class Settings(BaseSettings):
         "CELERY_RESULT_BACKEND", "redis://localhost:6379/0"
     )
 
+    # GCS Settings
+    GCS_BUCKET_NAME: str = os.getenv(
+        "GCS_BUCKET_NAME", "shadcnn"
+    )  # Replace default if needed
+    GCS_RESUME_FOLDER: str = os.getenv(
+        "GCS_RESUME_FOLDER", "resumes"
+    )  # Folder within the bucket
+
     class Config:
         # If using Pydantic v1, use this:
         # env_file = ".env"

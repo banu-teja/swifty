@@ -1,6 +1,11 @@
 import time
 import logging
+import asyncio  # Import asyncio
 from sqlalchemy.orm import Session
+from typing import Optional, Any, Union
+
+
+from app.services.browser import execute_browser, ApplicationStatus
 
 from .celery_app import celery_app
 from ..database import SessionLocal  # Import the session factory
@@ -10,6 +15,23 @@ from .. import crud, models, schemas  # Import crud functions, models, and schem
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+# 1. Define the recursive conversion function
+def stringify_values(data: Any) -> Any:
+    """Recursively converts all values in a dict or list to strings."""
+    if isinstance(data, dict):
+        # If it's a dictionary, apply recursively to each value
+        return {k: stringify_values(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        # If it's a list, apply recursively to each element
+        return [stringify_values(item) for item in data]
+    elif data is None:
+        # Decide how to handle None (e.g., empty string or 'None')
+        return ""  # Or return "None" if you prefer
+    else:
+        # Base case: convert the value to string
+        return str(data)
 
 
 @celery_app.task(bind=True)
@@ -90,6 +112,18 @@ def process_application_placeholder(self, application_id: int):
             #   user_profile_data.work_experience (list of dicts/WorkExperienceItem),
             #   user_profile_data.education (list of dicts/EducationItem),
             #   user_profile_data.skills (list), user_profile_data.resume_path (string), etc.
+
+            user_original = user_profile_data.model_dump()
+            user_stringified = stringify_values(user_original)
+
+            # Run the async function using asyncio.run()
+            result_model = asyncio.run(
+                execute_browser(
+                    task="Fill and submit the job application",
+                    link=job_url,
+                    sensitive_data=user_stringified,
+                )
+            )
             print(user_profile_data)
 
             logger.info(f"Simulating automation steps for {job_url}...")
@@ -97,11 +131,11 @@ def process_application_placeholder(self, application_id: int):
             time.sleep(10)  # Replace with actual browser interaction time
 
             # Example: Simulate extracting data from the job page
-            extracted_title = "Simulated Job Title"
-            extracted_company = "Simulated Company Inc."
+            extracted_title = result_model.job_title
+            extracted_company = result_model.job_company
 
             # Example: Simulate successful form submission
-            automation_success = True
+            automation_success = result_model.is_success
             logger.info(
                 f"Simulated successful submission for application ID: {application_id}"
             )

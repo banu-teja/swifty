@@ -9,3 +9,8 @@ pydantic[email]
 alembic
 python-dotenv
 pydantic-settings
+python-multipart # For FastAPI file uploads
+google-cloud-storage # For GCS integration
+browser-use
+Pillow
+langchain-google-genai

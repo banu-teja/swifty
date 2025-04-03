@@ -129,6 +129,7 @@ This project is built with Python using the FastAPI framework, SQLAlchemy for da
 - [ ] **Testing:** Add comprehensive unit and integration tests.
 - [ ] **Security Enhancements:** Review security aspects (input validation, dependency checks, etc.).
 - [ ] **Deployment Strategy:** Define a clear deployment process for production.
+- [ ] **Screenshots:** Return a final screenshot with all details filled.
 
 ## License
 

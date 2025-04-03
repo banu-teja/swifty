@@ -46,7 +46,7 @@ async def submit_application(
     email: str = Form(...),
     phone: Optional[str] = Form(None),
     position: str = Form(...),
-    startDate: Optional[str] = Form(None),  # Assuming date comes as string
+    # startDate: Optional[str] = Form(None), # Removed from form
     salary: Optional[str] = Form(None),
     linkedin: Optional[str] = Form(None),
     portfolio: Optional[str] = Form(None),
@@ -63,7 +63,7 @@ async def submit_application(
         "email": email,
         "phone": phone,
         "position": position,
-        "startDate": startDate,
+        # "startDate": startDate, # Removed from form
         "salary": salary,
         "linkedin": linkedin,
         "portfolio": portfolio,

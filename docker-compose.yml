@@ -24,6 +24,7 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - .:/app # Mount the entire project directory
+      - playwright_cache:/app/.playwright # Mount named volume for browser cache
     ports:
       - "8000:8000"
     environment:
@@ -46,6 +47,7 @@ services:
     command: celery -A app.worker.celery_app worker --loglevel=info
     volumes:
       - .:/app # Mount the entire project directory
+      - playwright_cache:/app/.playwright # Mount named volume for browser cache
     environment:
       # Assuming environment variables are set via .env file or similar
       # DATABASE_URL: postgresql://user:password@db:5432/jobappdb
@@ -60,3 +62,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  playwright_cache: # Define the named volume
